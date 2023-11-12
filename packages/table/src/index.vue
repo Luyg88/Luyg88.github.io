@@ -98,11 +98,11 @@
             :type="item.type"
             :label="item.label"
             :prop="item.prop"
-            :min-width="item['min-width'] || item.minWidth || item.width"
+            :min-width="item['min-width'] || item.minWidth"
+            :width="item.width"
             :sortable="item.sort || sortable"
             :align="item.align || 'center'"
             :fixed="item.fixed"
-            :width="item.width"
             :show-overflow-tooltip="
               item.noShowTip === false ? item.noShowTip : true
             "
@@ -183,36 +183,33 @@
         v-if="table.operator"
         :fixed="table.operatorConfig && table.operatorConfig.fixed"
         :label="(table.operatorConfig && table.operatorConfig.label) || '操作'"
-        :min-width="
-          (table.operatorConfig &&
-            (table.operatorConfig.width || table.operatorConfig.minWidth)) ||
-          100
-        "
+        :min-width="table.operatorConfig && table.operatorConfig.minWidth"
+        :width="table.operatorConfig && table.operatorConfig.width"
         :align="
           (table.operatorConfig && table.operatorConfig.align) || 'center'
         "
+        v-bind="{ ...operatorConfig.bind, ...$attrs }"
         class-name="operator"
       >
         <template #default="scope">
-          <div
-            class="operator_btn"
           <div class="operator_btn" :style="table.operatorConfig && table.operatorConfig.style">
-          >
             <template v-for="(item, index) in table.operator" :key="index">
               <el-button
                 @click="
                   item.fun && item.fun(scope.row, scope.$index, state.tableData)
                 "
-                :type="item.type ? item.type : 'primary'"
-                link
-                :style="item.style ? item.style : ''"
-                :icon="item.icon ? item.icon : ''"
-                :disabled="item.disabled"
-                :size="item.size ? item.size : 'small'"
+                v-bind="{
+                  type:'primary',
+                  link:true,
+                  text:true,
+                  size:'small',
+                  ...item.bind,
+                  ...$attrs
+                }"
                 v-if="checkIsShow(scope, item)"
               > -->
-      <!-- render渲染 -->
-      <!-- <template v-if="item.render">
+                <!-- render渲染 -->
+                <!-- <template v-if="item.render">
                   <render-col
                     :column="item"
                     :row="scope.row"

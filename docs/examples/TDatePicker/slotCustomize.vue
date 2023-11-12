@@ -44,7 +44,7 @@ const change = (event) => {
   console.log(`v-model绑定的值是：`, date.value)
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .slotCustomize {
   .t_layout_page_item {
     margin: 0 !important;

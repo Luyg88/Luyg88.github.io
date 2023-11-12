@@ -39,11 +39,11 @@ features:
 </p>
 <h1 style="text-align: center;">Thanks to all the contributors!</h1>
 
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { onMounted } from 'vue'
 import { fetchVersion } from './.vitepress/utils/fetchVersion'
- 
+
 onMounted(() => {
   fetchVersion()
 })
-</script>
+</script> -->

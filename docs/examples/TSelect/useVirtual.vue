@@ -1,7 +1,7 @@
 <template>
   <t-layout-page>
     <t-select
-      placeholder="请选择(虚拟列表)"
+      placeholder="请选择(虚拟列表--单选)"
       v-model="selectVlaue"
       :optionSource="stepList"
       useVirtual
