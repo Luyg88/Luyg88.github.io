@@ -12,7 +12,7 @@ git add .
 git commit -m 'deploy'
 
 # 如果发布到 码云代码仓
-git push -f https://github.com/Luyg88/fengmao-ui.git
+git push -f https://github.com/Luyg88/Luyg88.github.io.git master:gh-pages
 
 # 提交所有代码到github
 cd ../../../
