@@ -6,6 +6,7 @@
         @submit="conditionEnter"
         @handleEvent="handleEvent"
         :btnResetBind="{ size: 'small' }"
+        :isShowSetting="true"
       />
     </t-layout-page-item>
   </t-layout-page>

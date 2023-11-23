@@ -1,114 +1,123 @@
 <template>
-  <el-form
-    id="t_query_condition"
-    v-bind="$attrs"
-    :label-width="labelWidth"
-    :form="state.form"
-    size="default"
-    class="t-query-condition"
-    :style="{
+  <el-form id="t_query_condition"
+           v-bind="$attrs"
+           :label-width="labelWidth"
+           :form="state.form"
+           size="default"
+           class="t-query-condition"
+           :style="{
       'grid-template-areas': gridAreas,
       'grid-template-columns': `repeat(${colLength}, minmax(220px, ${
         100 / colLength
       }%))`,
     }"
-    @submit.prevent
-  >
-    <el-form-item
-      v-for="(opt, i) in cOpts"
-      :key="i"
-      :label="opt.label"
-      :label-width="opt.labelWidth"
-      v-bind="$attrs"
-      :style="{ gridArea: i }"
-      :class="[opt.className, { render_label: opt.labelRender }]"
-    >
+           @submit.prevent>
+    <el-form-item v-for="(opt, i) in cOpts"
+                  :key="i"
+                  :label="opt.label"
+                  :label-width="opt.labelWidth"
+                  v-bind="$attrs"
+                  :style="{ gridArea: i }"
+                  :class="[opt.className, { render_label: opt.labelRender }]">
       <!-- 自定义label -->
-      <template #label v-if="opt.labelRender">
-        <render-comp :form="state.form" :render="opt.labelRender" />
+      <template #label
+                v-if="opt.labelRender">
+        <render-comp :form="state.form"
+                     :render="opt.labelRender" />
       </template>
       <!-- 自定义输入框插槽 -->
       <template v-if="opt.slotName">
-        <slot :name="opt.slotName" :param="state.form"></slot>
+        <slot :name="opt.slotName"
+              :param="state.form"></slot>
       </template>
       <template v-if="opt.isSelfCom">
-        <component
-          :is="opt.comp"
-          v-model="state.form[opt.dataIndex]"
-          :placeholder="opt.placeholder || getPlaceholder(opt)"
-          v-bind="
+        <component :is="opt.comp"
+                   v-model="state.form[opt.dataIndex]"
+                   :placeholder="opt.placeholder || getPlaceholder(opt)"
+                   v-bind="
           typeof opt.bind == 'function'
             ? opt.bind(state.form)
             : { clearable: true, filterable: true, ...$attrs, ...opt.bind }
         "
-          :style="{ width: opt.width || '100%' }"
-          v-on="cEvent(opt)"
-        />
+                   :style="{ width: opt.width || '100%' }"
+                   v-on="cEvent(opt)" />
       </template>
-      <component
-        v-if="!opt.slotName && !opt.isSelfCom && opt.comp.includes('date')"
-        :is="opt.comp"
-        v-bind="
+      <component v-if="!opt.slotName && !opt.isSelfCom && opt.comp.includes('date')"
+                 :is="opt.comp"
+                 v-bind="
           typeof opt.bind == 'function'
             ? opt.bind(state.form)
             : { clearable: true, filterable: true, ...$attrs, ...opt.bind }
         "
-        :placeholder="opt.placeholder || getPlaceholder(opt)"
-        @change="handleEvent(opt.event, state.form[opt.dataIndex])"
-        v-model="state.form[opt.dataIndex]"
-        v-on="cEvent(opt)"
-      />
-      <component
-        v-if="!opt.slotName && !opt.isSelfCom  && opt.comp.includes('tree-select')"
-        :is="opt.comp"
-        v-bind="
+                 :placeholder="opt.placeholder || getPlaceholder(opt)"
+                 @change="handleEvent(opt.event, state.form[opt.dataIndex])"
+                 v-model="state.form[opt.dataIndex]"
+                 v-on="cEvent(opt)" />
+      <component v-if="!opt.slotName && !opt.isSelfCom  && opt.comp.includes('tree-select')"
+                 :is="opt.comp"
+                 v-bind="
           typeof opt.bind == 'function'
             ? opt.bind(state.form)
             : { clearable: true, filterable: true, ...$attrs, ...opt.bind }
         "
-        :placeholder="opt.placeholder || getPlaceholder(opt)"
-        @change="handleEvent(opt.event, state.form[opt.dataIndex])"
-        v-model="state.form[opt.dataIndex]"
-        v-on="cEvent(opt)"
-      />
-      <component
-        v-if="
+                 :placeholder="opt.placeholder || getPlaceholder(opt)"
+                 @change="handleEvent(opt.event, state.form[opt.dataIndex])"
+                 v-model="state.form[opt.dataIndex]"
+                 v-on="cEvent(opt)" />
+      <component v-if="
           !opt.isSelfCom &&
           !opt.slotName &&
           !opt.comp.includes('date') &&
           !opt.comp.includes('tree-select')
         "
-        :is="opt.comp"
-        v-bind="
+                 :is="opt.comp"
+                 v-bind="
           typeof opt.bind == 'function'
             ? opt.bind(state.form)
             : { clearable: true, filterable: true, ...$attrs, ...opt.bind }
         "
-        :placeholder="opt.placeholder || getPlaceholder(opt)"
-        @change="handleEvent(opt.event, state.form[opt.dataIndex])"
-        v-on="cEvent(opt)"
-        v-model="state.form[opt.dataIndex]"
-      >
-        <component
-          :is="compChildName(opt)"
-          v-for="(value, key, index) in selectListType(opt)"
-          :key="index"
-          :disabled="value.disabled"
-          :label="compChildLabel(opt, value)"
-          :value="compChildValue(opt, value, key)"
-        >{{ compChildShowLabel(opt, value) }}</component>
+                 :placeholder="opt.placeholder || getPlaceholder(opt)"
+                 @change="handleEvent(opt.event, state.form[opt.dataIndex])"
+                 v-on="cEvent(opt)"
+                 v-model="state.form[opt.dataIndex]">
+        <component :is="compChildName(opt)"
+                   v-for="(value, key, index) in selectListType(opt)"
+                   :key="index"
+                   :disabled="value.disabled"
+                   :label="compChildLabel(opt, value)"
+                   :value="compChildValue(opt, value, key)">{{ compChildShowLabel(opt, value) }}</component>
       </component>
     </el-form-item>
-    <el-form-item
-      v-if="Object.keys(cOpts).length > 0"
-      label-width="0"
-      style="grid-area: submit_btn"
-      :class="['btn', { flex_end: cellLength % colLength === 0 }]"
-    >
-      <el-button class="btn_check" @click="checkHandle" v-bind="queryAttrs" :loading="loading">查询</el-button>
-      <el-button v-if="reset" class="btn_reset" v-bind="resetAttrs" @click="resetHandle">重置</el-button>
+    <el-form-item v-if="Object.keys(cOpts).length > 0"
+                  label-width="0"
+                  style="grid-area: submit_btn"
+                  :class="['btn', { flex_end: cellLength % colLength === 0 }]">
+      <el-button class="btn_check"
+                 @click="checkHandle"
+                 v-bind="queryAttrs"
+                 :loading="loading">查询</el-button>
+      <el-button v-if="reset"
+                 class="btn_reset"
+                 v-bind="resetAttrs"
+                 @click="resetHandle">重置</el-button>
+      <el-button text
+                 v-if="isShowSetting"
+                 @click="dialogFormVisible = true">设置</el-button>
+
+      <el-dialog v-model="dialogFormVisible"
+                 width="40%"
+                 center>
+        <div class="transfer-container">
+          <el-transfer v-model="rightData"
+                       :data="leftData"
+                       :titles="['查询条件', '隐藏字段']"
+                       @change="handleChange" />
+        </div>
+      </el-dialog>
       <slot name="querybar"></slot>
-      <el-button v-if="originCellLength > colLength && isShowOpen" @click="open = !open" link>
+      <el-button v-if="originCellLength > colLength && isShowOpen"
+                 @click="open = !open"
+                 link>
         {{ open ? '收起' : '展开' }}
         <el-icon v-if="open">
           <ArrowUp />
@@ -124,6 +133,7 @@
 <script setup lang="ts" name="TQueryCondition">
 import RenderComp from './renderComp.vue'
 import { computed, ref, watch, onMounted, reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 const props = defineProps({
   opts: {
     type: Object,
@@ -164,7 +174,54 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  //是否显示设置
+  isShowSetting: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+interface Option {
+  key: string
+  label: string
+  name: string
+  disabled: boolean
+}
+
+const labelValues = computed(() => {
+  return Object.values(props.opts).map((item) => item.label)
+})
+const labelLength = computed(() => {
+  return Object.values(props.opts).length
+})
+const generateData = () => {
+  //读取缓存值
+  let data1 = getCache('leftData')
+  if (data1) return data1._value
+  const data: Option[] = []
+  for (let i = 0; i < labelLength.value; i++) {
+    data.push({
+      key: Object.keys(props.opts)[i],
+      label: labelValues.value[i],
+      name: Object.keys(props.opts)[i],
+      disabled: false,
+    })
+  }
+  debugger
+  return data
+}
+const initRightData = () => {
+  let data = getCache('rightData')
+  if (data&&props.isShowSetting) return data._value
+  else return []
+}
+
+const leftData = ref<Option[]>(generateData())
+const rightData = ref<any>(initRightData())
+let optValue = reactive({})
+const dialogFormVisible = ref(false)
+let clickQty = ref(false)
+
 // 初始化表单数据
 let state = reactive({
   form: Object.keys(props.opts).reduce((acc: any, field: any) => {
@@ -200,20 +257,25 @@ const originCellLength = computed(() => {
   return length
 })
 const cOpts = computed(() => {
+  //触发计算属性用
+  if (!clickQty.value) {
+  }
   let renderSpan = 0
-  return Object.keys(props.opts).reduce((acc: any, field: any) => {
-    let opt = {
-      ...props.opts[field],
-    }
-    // 收起、展开操作
-    if (props.isShowOpen) {
-      renderSpan += opt.span ?? 1
-      if (!open.value && renderSpan - 1 >= colLength.value) return acc
-    }
-    opt.dataIndex = field
-    acc[field] = opt
-    return acc
-  }, {})
+  return Object.keys(props.opts)
+    .filter((item) => !rightData._rawValue.includes(item))
+    .reduce((acc: any, field: any) => {
+      let opt = {
+        ...props.opts[field],
+      }
+      // 收起、展开操作
+      if (props.isShowOpen) {
+        renderSpan += opt.span ?? 1
+        if (!open.value && renderSpan - 1 >= colLength.value) return acc
+      }
+      opt.dataIndex = field
+      acc[field] = opt
+      return acc
+    }, {})
 })
 const cellLength: any = computed(() => {
   // 占用单元格长度
@@ -258,6 +320,45 @@ const gridAreas = computed(() => {
     return acc
   }, '')
 })
+
+//穿梭框右侧列表元素变化事件
+const handleChange = (
+  value: number[],
+  direction: 'left' | 'right',
+  movedKeys: string[]
+) => {
+  if (direction == 'left') {
+  } else {
+    if (Object.keys(props.opts).length == rightData._rawValue.length) {
+      ElMessage({
+        message: '必须保留一个查询条件',
+        type: 'warning',
+      })
+      rightData.value = getCache('rightData')
+        ? getCache('rightData')._value
+        : []
+      return false
+    }
+  }
+  //触发计算属性用
+  clickQty.value = !clickQty.value
+  dialogFormVisible.value = false
+  //缓存值
+  setCache('leftData', leftData)
+  setCache('rightData', rightData)
+}
+
+// 存储值到本地存储
+function setCache(key, value) {
+  localStorage.setItem(key, JSON.stringify(value))
+}
+
+// 从本地存储中获取值
+function getCache(key) {
+  const storedValue = localStorage.getItem(key)
+  return storedValue ? JSON.parse(storedValue) : null
+}
+
 // 引用第三方事件
 const cEvent = computed(() => {
   return (opt: any) => {
@@ -511,6 +612,13 @@ defineExpose({ state, props })
     position: relative;
     top: -1px;
     margin-left: 8px;
+  }
+
+  .transfer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Optional: Adjust the height as needed */
   }
 }
 </style>
