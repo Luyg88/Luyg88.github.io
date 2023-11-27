@@ -100,8 +100,9 @@
                  class="btn_reset"
                  v-bind="resetAttrs"
                  @click="resetHandle">重置</el-button>
-      <el-button text
+      <el-button class="btn_setting"
                  v-if="isShowSetting"
+                 v-bind="settingAttrs"
                  @click="dialogFormVisible = true">设置</el-button>
 
       <el-dialog v-model="dialogFormVisible"
@@ -142,7 +143,7 @@ const props = defineProps({
   },
   labelWidth: {
     type: String,
-    default: '110px',
+    default: '120px',
   },
   // 查询按钮配置
   btnCheckBind: {
@@ -150,6 +151,10 @@ const props = defineProps({
   },
   // 重置按钮配置
   btnResetBind: {
+    type: [Object],
+  },
+  //设置按钮配置
+  btnSettingBind:{
     type: [Object],
   },
   loading: {
@@ -207,7 +212,6 @@ const generateData = () => {
       disabled: false,
     })
   }
-  debugger
   return data
 }
 const initRightData = () => {
@@ -244,6 +248,10 @@ const queryAttrs = computed(() => {
 // 重置按钮配置
 const resetAttrs = computed(() => {
   return { size: 'default', ...props.btnResetBind }
+})
+// 设置按钮配置
+const settingAttrs = computed(() => {
+  return { size: 'default', ...props.btnSettingBind }
 })
 const originCellLength = computed(() => {
   let length = 0
@@ -486,7 +494,6 @@ const compChildShowLabel = computed(() => {
 })
 // placeholder的显示
 const getPlaceholder = (row: any) => {
-  // console.log(77, row.date)
   let placeholder
   if (row.comp && typeof row.comp == 'string') {
     if (row.comp.includes('input')) {
@@ -503,7 +510,6 @@ onMounted(() => {
   colLength.value = getColLength()
   if (props.boolEnter) {
     document.onkeyup = (e) => {
-      // console.log(7777, e)
       let key = e.keyCode
       let pagination = document.querySelectorAll('.el-pagination')
       let isPaginationInputFocus = false
@@ -609,6 +615,12 @@ defineExpose({ state, props })
   }
 
   .btn_reset {
+    position: relative;
+    top: -1px;
+    margin-left: 8px;
+  }
+
+  .btn_setting{
     position: relative;
     top: -1px;
     margin-left: 8px;

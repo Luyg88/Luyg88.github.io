@@ -5,7 +5,9 @@
         :opts="opts"
         @submit="conditionEnter"
         @handleEvent="handleEvent"
-        :btnResetBind="{ size: 'small' }"
+        :btnResetBind="{ size: 'normal',icon:'Refresh' }"
+        :btnCheckBind="{icon: 'Search'}"
+        :btnSettingBind="{icon: 'Setting'}"
         :isShowSetting="true"
       />
     </t-layout-page-item>
