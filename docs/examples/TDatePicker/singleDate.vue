@@ -9,7 +9,11 @@
       <div class="box_content">
         <div class="box_flex">
           <div>选择日期</div>
-          <t-date-picker v-model="date" :size="size" @change="change($event, 'date', date)" />
+          <t-date-picker
+            v-model="date"
+            :size="size"
+            @change="change($event, 'date', date)"
+          />
         </div>
         <div class="box_flex">
           <div>选择周</div>
@@ -99,8 +103,8 @@ const change = (event, type, value) => {
 <style lang="scss" scoped>
 .single_Date {
   .t_layout_page_item {
-    margin: 0;
-    padding: 0;
+    // margin: 0;
+    // padding: 0;
     .box_content {
       display: flex;
       padding: 10px;
