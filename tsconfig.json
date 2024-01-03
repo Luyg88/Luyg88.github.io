@@ -7,9 +7,10 @@
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
-    "types": [
-      "vite/client"
-    ],
+    "types": [ // 用来指定需要包含的模块，并将其包含在全局范围内。
+    "element-plus/global",
+    "../packages/components.d.ts"
+  ],
     // 如果编译器无法根据变量的使用来判断类型时，将用 any 类型代替
     // "suppressImplicitAnyIndexErrors": true,
     // 允许从没有设置默认导出的模块中默认导入。这并不影响代码的输出，仅为了类型检查。
@@ -29,6 +30,7 @@
       "@": [
         "packages"
       ],
+      "@vue/shared": ["./node_modules/@vue/shared"],
       "@/*": [
         "packages/*"
       ]

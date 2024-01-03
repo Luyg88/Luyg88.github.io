@@ -66,6 +66,7 @@
               table.firstColumn.label ||
               (table.firstColumn.type === 'radio' && '单选') ||
               (table.firstColumn.type === 'index' && '序号') ||
+              (table.firstColumn.type === 'expand' && '') ||
               '',
             fixed: table.firstColumn.fixed,
             align: table.firstColumn.align || 'center',
@@ -89,6 +90,9 @@
                 }}
               </span>
               <span v-else>{{ scope.$index + 1 }}</span>
+            </template>
+            <template v-if="table.firstColumn.type === 'expand'">
+              <slot name="expand" :scope="scope"></slot>
             </template>
           </template>
         </el-table-column>

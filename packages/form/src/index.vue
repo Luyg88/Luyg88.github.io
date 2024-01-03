@@ -168,6 +168,7 @@
 import RenderComp from './renderComp.vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, watch, onMounted, getCurrentInstance } from 'vue'
+import type { PropType } from 'vue'
 const props = defineProps({
   // 自定义类名
   className: {
@@ -187,11 +188,9 @@ const props = defineProps({
   },
   // 一行显示几个输入项;最大值4
   widthSize: {
-    type: Number,
+    type: Number as PropType<1 | 2 | 3 | 4>,
+    validator: (value: number) => [1, 2, 3, 4].includes(value),
     default: 2,
-    validator: (value: any) => {
-      return value <= 4
-    },
   },
   // 全局是否开启清除前后空格
   isTrim: {

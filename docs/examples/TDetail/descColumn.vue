@@ -54,6 +54,7 @@ const DataSource: any = reactive({
     {
       label: '计划盘点日期：',
       fieldName: 'planStocktakeDate',
+      bind: { 'label-class-name': 'custom_name' },
       value: '',
     },
     {

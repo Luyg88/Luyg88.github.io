@@ -42,6 +42,7 @@
               : { clearable: true, filterable: true, ...$attrs, ...opt.bind }
           "
           :style="{ width: opt.width || '100%' }"
+          @change="handleEvent(opt.event, queryState.form[opt.dataIndex])"
           v-on="cEvent(opt)"
         />
       </template>
@@ -174,11 +175,13 @@ const props = defineProps({
   },
   // 查询按钮配置
   btnCheckBind: {
-    type: [Object],
+    type: Object,
+    default: () => ({}),
   },
   // 重置按钮配置
   btnResetBind: {
-    type: [Object],
+    type: Object,
+    default: () => ({}),
   },
   //设置按钮配置
   btnSettingBind: {
@@ -397,14 +400,23 @@ function getCache(key) {
 // 引用第三方事件
 const cEvent = computed(() => {
   return (opt: any) => {
+     // console.log('opt--', opt)
     let event = { ...opt.eventHandle }
     let changeEvent = {}
     Object.keys(event).forEach((v) => {
       changeEvent[v] = (e) => {
-        if (e) {
+        if (
+          opt.comp.includes('select') ||
+          opt.comp.includes('picker') ||
+          opt.comp.includes('date')
+        ) {
           event[v] && event[v](e, queryState.form)
         } else {
-          event[v] && event[v](queryState.form)
+          if (e) {
+            event[v] && event[v](e, queryState.form)
+          } else {
+            event[v] && event[v](queryState.form)
+          }
         }
       }
     })

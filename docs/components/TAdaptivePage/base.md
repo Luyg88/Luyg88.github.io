@@ -41,4 +41,4 @@ TAdaptivePage/lefttree
 
 | 参数      | 说明     | 类型          | 默认值 |
 | :-------- | :------- | :------------ | :----- |
-| leftWidth | 左侧宽度 | number,String | 280    |
+| leftWidth | 左侧宽度 | number,String | 260    |
